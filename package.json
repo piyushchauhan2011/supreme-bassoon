@@ -16,10 +16,13 @@
     "lint:styles": "stylelint './packages/**/*.js' --ignore-pattern lib --ignore-pattern node_modules",
     "lint": "yarn lint:js && yarn lint:styles",
     "now-build": "build-storybook -c .storybook -o public",
-    "deploy-storybook": "storybook-to-ghpages"
+    "deploy-storybook": "storybook-to-ghpages",
+    "version-packages": "cross-env HUSKY_BYPASS=true lerna version",
+    "release": "cross-env HUSKY_BYPASS=true lerna publish from-git --yes"
   },
   "husky": {
     "hooks": {
+      "commit-msg": "[[ -n $HUSKY_BYPASS ]] || commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
@@ -29,11 +32,18 @@
       "git add"
     ]
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
+    "@commitlint/cli": "^13.2.1",
+    "@commitlint/config-conventional": "^13.2.0",
     "@storybook/addon-docs": "^6.3.10",
     "@storybook/preset-create-react-app": "^4.0.0",
     "@storybook/react": "^6.3.10",
@@ -41,6 +51,7 @@
     "babel-jest": "^27.2.5",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.13.2",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.24.2",
